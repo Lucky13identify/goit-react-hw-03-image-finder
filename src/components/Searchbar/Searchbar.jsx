@@ -1,10 +1,12 @@
+import { Header, Form, Button } from './Serchbar.styled';
+
 export const Searchbar = ({ onSubmit, onChange }) => {
   return (
-    <header className="searchbar">
-      <form className="form" onSubmit={onSubmit}>
-        <button type="submit" className="button">
+    <Header className="searchbar">
+      <Form className="form" onSubmit={onSubmit}>
+        <Button type="submit" className="button">
           <span className="button-label">Search</span>
-        </button>
+        </Button>
 
         <input
           className="input"
@@ -14,7 +16,7 @@ export const Searchbar = ({ onSubmit, onChange }) => {
           placeholder="Search images and photos"
           onChange={onChange}
         />
-      </form>
-    </header>
+      </Form>
+    </Header>
   );
 };

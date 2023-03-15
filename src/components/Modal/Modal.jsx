@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
+
+const modalRootContainer = document.querySelector('#modal-root');
+
 export class Modal extends Component {
+  componentDidMount() {
+    window.addEventListener('keydown', this.ESCpress);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.ESCpress);
+  }
+
+  ESCpress = e => {
+    if (e.code === `Escape`) {
+      return this.props.close();
+    }
+  };
+
   render() {
-    return (
+    return createPortal(
       <div className="overlay" onClick={this.props.state}>
         <div className="modal">{this.props.children}</div>
-      </div>
+      </div>,
+      modalRootContainer
     );
   }
 }
-
-// export const Modal = ({ children }) => {
-//   return (
-//     <div className="overlay">
-//       <div className="modal">{children}</div>
-//     </div>
-//   );
-// };
