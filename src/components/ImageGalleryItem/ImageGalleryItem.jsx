@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List } from './ImageGalleryItem.styled';
 import { Modal } from '../Modal/Modal';
 
 export class ImageGalleryItem extends Component {
@@ -10,8 +9,8 @@ export class ImageGalleryItem extends Component {
     this.setState({ isModalOpen: !true });
   };
 
-  openModal = e => {
-    this.setState({ isModalOpen: !false, largeURL: e.target.srcset });
+  openModal = largeURL => {
+    this.setState({ isModalOpen: !false, largeURL });
   };
 
   closeModal = e => {
@@ -22,22 +21,27 @@ export class ImageGalleryItem extends Component {
 
   render() {
     return (
-      <List>
-        {this.props.response.map(item => {
-          return (
-            <li className="gallery-item" key={item.id} onClick={this.openModal}>
-              <img src={item.webformatURL} srcSet={item.largeImageURL} alt="" />
-            </li>
-          );
-        })}
+      <div>
+        <li
+          className="gallery-item"
+          key={this.props.id}
+          onClick={() => this.openModal(this.props.largeIMG)}
+        >
+          <img src={this.props.src} alt="" />
+        </li>
+
         {this.state.isModalOpen && this.state.largeURL !== undefined && (
           <Modal state={this.closeModal} close={this.closeESC}>
             <img className="large-img" src={this.state.largeURL} alt="" />
           </Modal>
         )}
-      </List>
+      </div>
     );
   }
 }
 
-ImageGalleryItem.propTypes = { response: PropTypes.array };
+ImageGalleryItem.propTypes = {
+  id: PropTypes.number,
+  src: PropTypes.string,
+  largeIMG: PropTypes.string,
+};

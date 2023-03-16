@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { CirclesWithBar } from 'react-loader-spinner';
+import { getImages } from 'services/getImages';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { Button } from './Button/Button';
-
-// пропсs
-// стили
 
 export class App extends Component {
   state = {
@@ -19,24 +16,16 @@ export class App extends Component {
 
   onLoadResults = async () => {
     this.setState({ loading: true });
-
-    try {
-      const response = await axios
-        .get(
-          `https://pixabay.com/api/?q=${this.state.inputValue}&page=${this.state.page}&key=33641597-af0dded98b621629426cb08e5&image_type=photo&orientation=horizontal&per_page=12`
-        )
-        .finally(() => this.setState({ loading: false }));
-      this.setState(prevState => {
-        return {
-          response: [...prevState.response, ...response.data.hits],
-          page: prevState.page + 1,
-        };
-      });
-
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+    const promise = await getImages(this.state.inputValue, this.state.page);
+    getImages(this.state.inputValue, this.state.page).finally(() =>
+      this.setState({ loading: false })
+    );
+    this.setState(prevState => {
+      return {
+        response: [...prevState.response, ...promise.hits],
+        page: prevState.page + 1,
+      };
+    });
   };
 
   onChange = e => {
@@ -55,7 +44,14 @@ export class App extends Component {
           onChange={this.onChange}
         />
         <ImageGallery>
-          <ImageGalleryItem response={this.state.response} />
+          {this.state.response.map(item => (
+            <ImageGalleryItem
+              key={item.id}
+              id={item.id}
+              src={item.webformatURL}
+              largeIMG={item.largeImageURL}
+            />
+          ))}
         </ImageGallery>
 
         {this.state.loading && (
