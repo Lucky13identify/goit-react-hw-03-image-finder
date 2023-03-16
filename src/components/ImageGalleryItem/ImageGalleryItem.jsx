@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { List } from './ImageGalleryItem.styled';
 import { Modal } from '../Modal/Modal';
-import React, { Component } from 'react';
 
 export class ImageGalleryItem extends Component {
   state = { isModalOpen: false, largeURL: '' };
@@ -20,7 +21,6 @@ export class ImageGalleryItem extends Component {
   };
 
   render() {
-    console.log(this.props.loading);
     return (
       <List>
         {this.props.response.map(item => {
@@ -39,3 +39,5 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = { response: PropTypes.array };

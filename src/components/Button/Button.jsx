@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { DivButton, LoadMore } from './Button.styled';
 
 export class Button extends Component {
@@ -12,3 +13,5 @@ export class Button extends Component {
     );
   }
 }
+
+Button.propTypes = { onClick: PropTypes.func };
